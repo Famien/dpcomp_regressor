@@ -144,6 +144,13 @@ for private_histogram_info in private_histograms_data:
 
 error_data = map(lambda x: [math.log(x[0]), x[1], math.log(x[2]), math.log(x[3])], error_data)
 
+error_data_new = []
+
+for i in range(len(error_data)):
+	if i % 20 == 0:
+		error_data_new.append(error_data[i])
+
+error_data = error_data_new
 # 8. write error data
 with open('training_data_x.csv', 'wb') as csvfile:
 	with open('training_data_y.csv', 'wb') as csvfile2:

@@ -7,19 +7,37 @@ import csv
 import matplotlib.pyplot as plt
 import pylab
 import random
+
 '''
 algorithms
 
 laplace
 '''
 
-
+'''
+test
+'''
 train_data_Y = [ x**2 + random.randrange(-2,2) for x in range(-10,10)]
 X = range(-10, 10)
 train_data_X = map(lambda x: [x, x**2], range(-10, 10))
 
-poly = PolynomialFeatures(degree=2)
-X_ = poly.fit_transform(train_data_X)
+'''
+generate model from synthetic data
+'''
+with open('training_data_y.csv', 'rb') as csvfile:
+	csvreader = csv.reader(csvfile, delimiter=' ')
+	train_data_Y = list(csvreader)
+
+ 
+with open('training_data_x.csv', 'rb') as csvfile:
+	csvreader = csv.reader(csvfile, delimiter=' ')
+	train_data_X = list(csvreader)
+
+#poly = PolynomialFeatures(degree=2)
+#X_ = poly.fit_transform(train_data_X)
+print "x: ", len(train_data_X)
+print "y: ", len(train_data_Y)
+X_ = pd.DataFrame(data=train_data_X)
 y = pd.DataFrame(data=train_data_Y)
 #predict = poly.fit_transform(X)
 
@@ -28,15 +46,15 @@ model = lm.fit(X_,y)
 
 #predictions = lm.predict(X)
 
-
+X_2 = map(lambda x: x[2], train_data_X)
 print lm.coef_
 #print "coef: ", lm.intercept__
 m = lm.coef_[0][0]
 b = lm.intercept_
-plt.scatter(X, train_data_Y, color='blue')
+plt.scatter(X_2, train_data_Y, color='blue')
 #plt.scatter(train_data_X, patent_data_y, color='blue')
 #plt.plot([min(X), max(X)], [b, m*max(X)+b ], 'r')
-plt.plot(X, lm.predict(X_), color='red')
+#plt.plot(X, lm.predict(X_), color='red')
 pylab.show()
 
 #print "predictions, ", predictions
