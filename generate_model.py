@@ -7,7 +7,7 @@ import csv
 import matplotlib.pyplot as plt
 import pylab
 import random
-
+import sys
 '''
 algorithms
 
@@ -24,19 +24,20 @@ train_data_X = map(lambda x: [x, x**2], range(-10, 10))
 '''
 generate model from synthetic data
 '''
-with open('training_data_y.csv', 'rb') as csvfile:
+
+training_data = sys.argv[1]
+print "training _data: ", training_data
+with open('training_data_' + training_data + '_y.csv', 'rb') as csvfile:
 	csvreader = csv.reader(csvfile, delimiter=' ')
 	train_data_Y = list(csvreader)
 
  
-with open('training_data_x.csv', 'rb') as csvfile:
+with open('training_data_' + training_data + '_x.csv', 'rb') as csvfile:
 	csvreader = csv.reader(csvfile, delimiter=' ')
 	train_data_X = list(csvreader)
 
 #poly = PolynomialFeatures(degree=2)
 #X_ = poly.fit_transform(train_data_X)
-print "x: ", len(train_data_X)
-print "y: ", len(train_data_Y)
 X_ = pd.DataFrame(data=train_data_X)
 y = pd.DataFrame(data=train_data_Y)
 #predict = poly.fit_transform(X)
