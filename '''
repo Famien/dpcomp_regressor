@@ -1,0 +1,10 @@
+'''
+test system
+
+Given dataset, queries, and target error rate, determine which algorithm will perform the best.
+
+Privately extract features, then run on model to get epsilons. Pick the highest one.
+
+Actually run algorithms to see which is best
+
+'''

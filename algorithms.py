@@ -10,6 +10,7 @@ import math
 def mwem(B, queries, num_iterations, epsilon):
 	n = sum(B)
 	A = get_uniform(B)
+	A = np.array(A)
 	measurements = dict()
 	num_iterations = min(num_iterations, len(queries)) # can't iterator for more queries than we have	
 	for i in range(num_iterations):
@@ -63,16 +64,16 @@ def get_queries(num_bins, domain_size):
 	
 def multiplicative_weights(A, measurements, queries):
 	total = sum(A)
-	for i in range(100):
+	for i in range(50):
 		for query_i in measurements.keys():	
 			error = measurements[query_i] - evaluate_query(A, queries[query_i])
-			for i in range(len(A)):
+			query_ranges = queries[query_i]
+			for i in range(query_ranges[0], query_ranges[1] + 1):
 				A[i] *= math.e**(query_component(queries[query_i], i)*error/(2.0*total))
-				
-			count = sum(A)
-			for i in range(len(A)):
-				A[i] *= total/float(count)	
+			count = np.sum(A)
+			A *= total/float(count)	
 	return A
+
 def get_private_measure(query, B, T, epsilon):
 	measurement = evaluate_query(B, query)
 	laplace_noise = get_laplace_noise(epsilon/float(2*T))
@@ -82,7 +83,7 @@ def get_uniform(A):
 	total = sum(A)
 	size = len(A)
 	uniform = []
-	dist = total/float(size)
+	dist = int(total/float(size))
 	for i in range(size):
 		uniform.append(dist)
 	
@@ -93,11 +94,14 @@ def query_component(q_range, i):
 		return 1
 	return 0
 
-def evaluate_query(A, q_range):
+def evaluate_query_slow(A, q_range):
 	total = 0
 	for i in range(len(A)):
 		total += query_component(q_range, i) * A[i]
 	return total
+
+def evaluate_query(A, q_range):
+	return np.sum(A[q_range[0]:q_range[1]+1])
 
 def get_histogram(counts, num_bins):
     '''
@@ -162,3 +166,14 @@ def get_laplace_hist(counts, e):
         output.append(new_count)
     return output
 
+def uniform_distance(A):
+	total = sum(A)
+	avg = total/len(A)
+	
+	distance = 0
+	for element in A:
+		distance += abs(avg - element)
+		
+	scaled_distance = (distance/total)/2
+	
+	return scaled_distance
