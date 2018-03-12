@@ -6,14 +6,16 @@ from sklearn.metrics import r2_score
 import numpy as np
 import pandas as pd
 import csv
-import matplotlib.pyplot as plt
-import pylab
 import random
 import sys
 import math
 import pickle
 from sklearn.externals import joblib
 
+#joblib.dump({}, "models.pkl")
+
+models = joblib.load("models.pkl")
+print("models: ", models)
 '''
 generate model from synthetic data
 '''
@@ -44,7 +46,7 @@ algs = ["HB", "AHP", "DPCube", "DAWA"]
 
 for alg in algs:
 
-	data = np.load("/home/famien/Code/dpcomp_core/"+alg+"_results.npy")
+	data = np.load("/home/ubuntu/Code/dpcomp_core/"+alg+"_results_1-5.npy")
 	'''
 	split into train and test data
 
@@ -58,7 +60,6 @@ for alg in algs:
 			train.append(i)
 		else:
 			test.append(i)
-
 	train_X = []
 	train_y = []
 	test_X = []
@@ -72,6 +73,7 @@ for alg in algs:
 		test_X.append(data[index][0:6])
 		test_y.append(data[index][6])
 
+	print("num test data: ", len(train_X))
 	#train_data_X = map(lambda x: x[0:6], data)
 
 	X_ = train_X
@@ -86,7 +88,7 @@ for alg in algs:
 	joblib.dump(models, "models.pkl")
 
 	epsilon_predict = regr.predict(test_X)
-
+	print("alg: ", alg)
 	#print "accuracy: ", regr.score(test_X,test_y)
-	print "var explained: ", r2_score(test_y, epsilon_predict)
-	print regr.feature_importances_
+	print("var explained: ", r2_score(test_y, epsilon_predict))
+	print(regr.feature_importances_)
