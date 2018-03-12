@@ -2,3 +2,5 @@
 regression/
 *.csv
 *.pyc
+*.npy
+*.p

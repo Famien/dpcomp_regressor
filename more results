@@ -1,0 +1,13 @@
+(regression) famien@Lego:~/Code/MENG/regression$ python regressor.py 
+Alg:  HB
+	var explained:  0.726380123414
+[(0.72, 'error'), (0.15, 'scale'), (0.07, 'domain_size'), (0.04, 'std_dev'), (0.01, 'uniform_distance'), (0.0, 'data_range')]
+Alg:  AHP
+	var explained:  0.827280151594
+[(0.83, 'error'), (0.12, 'scale'), (0.02, 'uniform_distance'), (0.01, 'std_dev'), (0.01, 'domain_size'), (0.01, 'data_range')]
+Alg:  DPCube
+	var explained:  0.670980932785
+[(0.97, 'error'), (0.03, 'uniform_distance'), (0.0, 'std_dev'), (0.0, 'scale'), (0.0, 'domain_size'), (0.0, 'data_range')]
+Alg:  DAWA
+	var explained:  0.799222032042
+[(0.78, 'error'), (0.17, 'scale'), (0.03, 'domain_size'), (0.01, 'uniform_distance'), (0.01, 'std_dev'), (0.01, 'data_range')]

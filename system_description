@@ -1,0 +1,19 @@
+#dpcomp
+
+'''
+alg execution: run algs on data
+'''
+
+#regression
+'''
+synthetic_data: generate synthetic data
+
+
+flow: synthetic data -> makes training data
+
+		regressor -> makes model from training data
+		test_model -> creates model predictions
+		dpcomp test_system -> runs algs on test data
+		evaulate results -> compares predicitons to actual runs
+
+'''
