@@ -75,7 +75,6 @@ print "test: ", sum(dataset_vectors_ext[len(dataset_vectors_ext) -1]), len(datas
 histograms = []
 num_bins = 50
 for data_vector in data_set_vectors_ext:
-	domain_size = len(data_vector)
 	histogram, bin_size = get_histogram(data_vector, num_bins)
 	histograms.append((histogram, domain_size))
 
