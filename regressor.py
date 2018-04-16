@@ -8,8 +8,6 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 import pandas as pd
 import csv
-import matplotlib.pyplot as plt
-import pylab
 import random
 import sys
 import math
@@ -47,8 +45,10 @@ algs = [algs[1]]
 features = ["scale", "domain_size", "error", "data_range", "std_dev", "uniform_distance"]
 
 for alg in algs:
-
+	'''
 	data = np.load("/home/famien/Code/pipe/"+alg+"_data_6.npy")
+	data = np.load("/home/ubuntu/Code/dpcomp_core/"+alg+"_results_1-5.npy")
+	'''
 	'''
 	split into train and test data
 
@@ -60,9 +60,6 @@ for alg in algs:
 			train.append(i)
 		else:
 			test.append(i)
-
-
-
 
 	train_X = []
 	train_y = []
@@ -121,9 +118,3 @@ for alg in algs:
 	print "train average, median", sum(epsilon_predict_train)/len(epsilon_predict_train), sorted(epsilon_predict_train)[len(epsilon_predict_train)/2]
 	print "mean squared error test: ", mean_squared_error(test_y, epsilon_predict_test)
 	print "train average, median", sum(epsilon_predict_test)/len(epsilon_predict_test), sorted(epsilon_predict_test)[len(epsilon_predict_test)/2]
-
-	# Plot outputs
-	#plt.scatter([x[2] for x in test_X], test_y,  color='black',)
-	# plt.scatter([x[2] for x in test_X], epsilon_predict, color='blue')
-	# plt.show()
-	

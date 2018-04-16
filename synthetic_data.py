@@ -8,7 +8,10 @@ import algorithms as algs
 import random
 from data_generation import *
 
+'''
+mypath = join(os.getcwd(), "datafiles/1D")
 mypath = "/home/famien/Code/pipe/1D"
+'''
 data_files = [join(mypath, f) for f in listdir(mypath) if isfile(join(mypath, f))]
 
 # 2. get data vectors from files
@@ -39,11 +42,10 @@ for dataset in dataset_vectors_ext:
 		dataset_vectors_ext = dataset_vectors_ext + new_vector
 		done +=1
 		if done % 1000 == 0:
-			print "done: ", done
+			print("done: ", done)
 
 print "len dataset: ", len(dataset_vectors_ext)
 			
-
 #vary scale
 for dataset in dataset_vectors_ext:
 		new_vectors = vary_scale(dataset, [.25,4])
@@ -70,6 +72,7 @@ print "num non synthetic: ", len(dataset_vectors_ext)
 # 		if done % 1000 == 0:
 # 			print "done: ", done
 # print "total synthetic datasets: ", len(dataset_vectors_ext)
+
 data = numpy.array(dataset_vectors_ext)
 
 numpy.save("DATA6", data)
