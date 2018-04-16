@@ -18,10 +18,11 @@ for data_file in data_files:
 	data_from_file = np.load(data_file)
 	dataset_vectors.append(data_from_file)
 
-
+print "len dataset: ", len(dataset_vectors)
 # 3. extend vectors by merging domain buckets
 dataset_vectors_ext = []
-new_sizes = [float(x)/100 for x in range(1,100,12)]
+#new_sizes = [float(x)/100 for x in range(1,100,12)]
+new_sizes = [.1, .25]
 for dataset_vector in dataset_vectors:
 	dataset_vectors_ext.append(dataset_vector)
 	for new_size in new_sizes:
@@ -30,33 +31,47 @@ for dataset_vector in dataset_vectors:
 			continue # no need for execessively small datasets?
 		new_data_vector = algs.merge_data_vector(dataset_vector, new_size)
 		dataset_vectors_ext.append(new_data_vector)
+print "len dataset: ", len(dataset_vectors_ext)
 
 done = 0
 for dataset in dataset_vectors_ext:
-		new_vector = vary_shape(dataset, iterations = 16)
+		new_vector = vary_shape(dataset, iterations = 4)
 		dataset_vectors_ext = dataset_vectors_ext + new_vector
 		done +=1
 		if done % 1000 == 0:
 			print "done: ", done
 
-print "num non synthetic: ", len(dataset_vectors_ext)
-# pure synthetic data
-scales = range(1,200000,11000)
-domain_sizes = range(1,3000, 900)
+print "len dataset: ", len(dataset_vectors_ext)
+			
 
-print "num to make: ", len(scales)*len(domain_sizes)
-done = 0
-for scale in scales:
-	for domain_size in domain_sizes:
-		dataset_vector = [0]*domain_size
-		dataset_vector[0] = scale
-		dataset_vectors_ext = dataset_vectors_ext + vary_shape(dataset, iterations = 5)
+#vary scale
+for dataset in dataset_vectors_ext:
+		new_vectors = vary_scale(dataset, [.25,4])
+		dataset_vectors_ext = dataset_vectors_ext + new_vectors
 		done +=1
 		if done % 1000 == 0:
 			print "done: ", done
-print "total synthetic datasets: ", len(dataset_vectors_ext)
+
+print "len dataset: ", len(dataset_vectors_ext)
+
+print "num non synthetic: ", len(dataset_vectors_ext)
+# pure synthetic data
+# scales = range(1,200000,11000)
+# domain_sizes = range(1,3000, 900)
+
+# print "num to make: ", len(scales)*len(domain_sizes)
+# done = 0
+# for scale in scales:
+# 	for domain_size in domain_sizes:
+# 		dataset_vector = [0]*domain_size
+# 		dataset_vector[0] = scale
+# 		dataset_vectors_ext = dataset_vectors_ext + vary_shape(dataset, iterations = 5)
+# 		done +=1
+# 		if done % 1000 == 0:
+# 			print "done: ", done
+# print "total synthetic datasets: ", len(dataset_vectors_ext)
 data = numpy.array(dataset_vectors_ext)
 
-numpy.save("DATA5", data)
+numpy.save("DATA6", data)
 
 #DATA5 most recent

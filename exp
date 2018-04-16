@@ -1,0 +1,85 @@
+exp
+
+_data_5 evaulation results
+HB  : 
+len data:  452952
+avg error:  [14.2000882]
+AHP  : 
+len data:  47532
+avg error:  [13.56933644]
+DPCube  : 
+len data:  452952
+avg error:  [18.21048401]
+DAWA  : 
+len data:  9087
+avg error:  [18.15686267]
+
+alg:  HB  avg difference:  0.342979676651  avg actual and predicted:  3.5   3.49946318983
+alg:  AHP  avg difference:  0.171508054348  avg actual and predicted:  3.5   3.50117027421
+alg:  DPCube  avg difference:  0.48606122411  avg actual and predicted:  3.5   3.50996873994
+alg:  DAWA  avg difference:  0.174547390432  avg actual and predicted:  3.5   3.51795910957
+
+
+
+thousandth
+
+avg error:  [1101.73752408]
+AHP  : 
+len data:  14835
+avg error:  [850.09070312]
+DPCube  : 
+len data:  14835
+avg error:  [1569.56289967]
+DAWA  : 
+len data:  14835
+avg error:  [1459.11114282]
+
+alg:  HB  avg difference:  1.77015324748  avg actual and predicted:  1.2735338726   3.03562366249
+alg:  AHP  avg difference:  1.15814159854  avg actual and predicted:  1.2735338726   2.38324112789
+alg:  DPCube  avg difference:  1.23151294086  avg actual and predicted:  1.2735338726   0.933967034935
+alg:  DAWA  avg difference:  1.34731329936  avg actual and predicted:  1.2735338726   2.60792650739
+
+
+real_dat
+a
+HB  : 
+len data:  1782
+avg error:  [67.38344625]
+AHP  : 
+len data:  1782
+avg error:  [75.48858734]
+DPCube  : 
+len data:  1782
+avg error:  [81.52304259]
+DAWA  : 
+len data:  1782
+avg error:  [79.52147272]
+
+alg:  HB  avg difference:  0.351827160494  avg actual and predicted:  0.5   0.148260381594
+alg:  AHP  avg difference:  0.433136924804  avg actual and predicted:  0.5   0.0689214365881
+alg:  DPCube  avg difference:  0.483145735129  avg actual and predicted:  0.5   0.0184072390572
+alg:  DAWA  avg difference:  0.366230078563  avg actual and predicted:  0.5   0.191758698092
+
+
+
+total len:  452952
+train len:  90398
+Alg:  HB
+	var explained:  0.849623920572
+[(0.7, 'error'), (0.21, 'scale'), (0.08, 'domain_size'), (0.0, 'uniform_distance'), (0.0, 'std_dev'), (0.0, 'data_range')]
+total len:  47532
+train len:  9195
+Alg:  AHP
+	var explained:  0.944161954547
+[(0.67, 'error'), (0.28, 'scale'), (0.03, 'uniform_distance'), (0.01, 'std_dev'), (0.01, 'domain_size'), (0.01, 'data_range')]
+total len:  452952
+train len:  90064
+Alg:  DPCube
+	var explained:  0.817008057094
+[(0.66, 'error'), (0.09, 'std_dev'), (0.08, 'uniform_distance'), (0.08, 'scale'), (0.08, 'data_range'), (0.01, 'domain_size')]
+total len:  9087
+train len:  1779
+Alg:  DAWA
+	var explained:  0.951423102062
+[(0.66, 'error'), (0.19, 'scale'), (0.05, 'domain_size'), (0.04, 'uniform_distance'), (0.03, 'std_dev'), (0.03, 'data_range')]
+(regression) famien@Lego:~/Code/MENG/regression$ 

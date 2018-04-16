@@ -30,3 +30,21 @@ def vary_shape(initial_vector, iterations = None):
 		ref_vector = new_vector
 	
 	return data_vectors
+
+def vary_scale(initial_vector, sizes):
+	new_vectors = []
+	old_scale = sum(initial_vector)
+
+	for size in sizes:
+		new_scale = int(old_scale*size)
+
+		diff = new_scale - old_scale
+		per_bucket = diff/len(initial_vector)
+
+		new_vector = initial_vector[:]
+		for i in range(len(new_vector)):
+			new_vector[i] = new_vector[i] + per_bucket
+
+		new_vectors.append(new_vector)
+
+	return new_vectors

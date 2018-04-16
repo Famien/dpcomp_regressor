@@ -4,6 +4,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
 import numpy as np
 import pandas as pd
 import csv
@@ -14,9 +15,6 @@ import sys
 import math
 import pickle
 from sklearn.externals import joblib
-
-
-joblib.dump({}, "models.pkl")
 
 '''
 generate model from synthetic data
@@ -45,11 +43,12 @@ with open('training_data_' + training_data + '_x.csv', 'rb') as csvfile:
 # fields: scale, domain_size, error, data_range, std_dev, uniform_distance, epsilon
 #           0         1         2       3           4           5              6
 algs = ["HB", "AHP", "DPCube", "DAWA"]
+algs = [algs[1]]
 features = ["scale", "domain_size", "error", "data_range", "std_dev", "uniform_distance"]
 
 for alg in algs:
 
-	data = np.load("/home/famien/Code/pipe/"+alg+"mini_test_results_5.npy")
+	data = np.load("/home/famien/Code/pipe/"+alg+"_data_6.npy")
 	'''
 	split into train and test data
 
@@ -57,25 +56,36 @@ for alg in algs:
 	train = []
 	test = []
 	for i in range(len(data)):
-		if random.random() >= .8:
+		if random.random() >= .5:
 			train.append(i)
 		else:
 			test.append(i)
+
+
+
 
 	train_X = []
 	train_y = []
 	test_X = []
 	test_y = []
 
+	all_train_data = []
+	all_test_data = []
+
 	print "total len: ", len(data)
 
 	for index in train:
 		train_X.append(data[index][0:6])
 		train_y.append(data[index][6])
+		all_train_data.append(data[index])
 
 	for index in test:
 		test_X.append(data[index][0:6])
 		test_y.append(data[index][6])
+		all_test_data.append(data[index])
+
+	np.save( "/home/famien/Code/pipe/"+alg+"_data_6_train.npy", all_train_data)
+	np.save("/home/famien/Code/pipe/"+alg+"_data_6_test.npy", all_test_data)
 
 	# train_X = map(lambda x: [x[0], x[1], max(0.0000000001, x[2]), x[3],x[4], max(0.0000000001, x[5])], train_X)
 	# test_X = map(lambda x: [x[0], x[1], max(0.0000000001, x[2]), x[3],x[4], max(0.0000000001, x[5])], test_X)
@@ -85,34 +95,35 @@ for alg in algs:
 	X_ = train_X
 	y = train_y
 
-	regr = RandomForestRegressor()
+	regr = RandomForestRegressor(oob_score = True, max_depth=12)
 	#regr = DecisionTreeRegressor(random_state=0)
 	regr.fit(X_,y)
 
 	#models = pickle.loads("models.pickle")
-	models = joblib.load("models.pkl")
+	try:
+		models = joblib.load("models_6.pkl")
+	except IOError:
+		models = {}
 	models[alg] = regr
-	joblib.dump(models, "models.pkl")
-
-	epsilon_predict = regr.predict(test_X)
+	joblib.dump(models, "models_6.pkl")
 
 	#print "accuracy: ", regr.score(test_X,test_y)
 	print "Alg: ", alg
-	print "\tvar explained: ", r2_score(test_y, epsilon_predict)
+	#print "\tvar explained: ", r2_score(test_y, epsilon_predict)
+	print "out of bag: ", regr.oob_score_
 	print sorted(zip(map(lambda x: float("{0:.2f}".format(round(x, 4))), regr.feature_importances_), features),
 	             reverse=True)
 
-	# font = {'family' : 'normal',
-	#         'weight' : 'bold',
-	#         'size'   : 12}
+	epsilon_predict_test = regr.predict(test_X)
+	epsilon_predict_train = regr.predict(train_X)
 
-	# matplotlib.rc('font', **font)
+	print "mean squared error train: ", mean_squared_error(train_y, epsilon_predict_train)
+	print "train average, median", sum(epsilon_predict_train)/len(epsilon_predict_train), sorted(epsilon_predict_train)[len(epsilon_predict_train)/2]
+	print "mean squared error test: ", mean_squared_error(test_y, epsilon_predict_test)
+	print "train average, median", sum(epsilon_predict_test)/len(epsilon_predict_test), sorted(epsilon_predict_test)[len(epsilon_predict_test)/2]
 
-	# plt.figure(figsize=(25,20))
-
-	# plt.bar(plt_x, rf.feature_importances_, width=0.5, color="blue",align='center')
-	# plt.gca().set_xticklabels(plt_x, rotation=60 )
-	# plt.xticks(plt_x, features)
-	# plt.ylabel("relative information")
-	# plt.xlabel("features")
+	# Plot outputs
+	#plt.scatter([x[2] for x in test_X], test_y,  color='black',)
+	# plt.scatter([x[2] for x in test_X], epsilon_predict, color='blue')
 	# plt.show()
+	
