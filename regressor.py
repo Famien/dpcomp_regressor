@@ -41,10 +41,11 @@ with open('training_data_' + training_data + '_x.csv', 'rb') as csvfile:
 # fields: scale, domain_size, error, data_range, std_dev, uniform_distance, epsilon
 #           0         1         2       3           4           5              6
 algs = ["HB", "AHP", "DPCube", "DAWA"]
-algs = [algs[1]]
+algs = ["Privelet"]
 features = ["scale", "domain_size", "error", "data_range", "std_dev", "uniform_distance"]
 
 for alg in algs:
+	data = np.load("/home/famien/Code/pipe/"+alg+"_data_6_new.npy")
 	'''
 	data = np.load("/home/famien/Code/pipe/"+alg+"_data_6.npy")
 	data = np.load("/home/ubuntu/Code/dpcomp_core/"+alg+"_results_1-5.npy")
@@ -69,7 +70,7 @@ for alg in algs:
 	all_train_data = []
 	all_test_data = []
 
-	print "total len: ", len(data)
+	print("total len: ", len(data))
 
 	for index in train:
 		train_X.append(data[index][0:6])
@@ -87,7 +88,7 @@ for alg in algs:
 	# train_X = map(lambda x: [x[0], x[1], max(0.0000000001, x[2]), x[3],x[4], max(0.0000000001, x[5])], train_X)
 	# test_X = map(lambda x: [x[0], x[1], max(0.0000000001, x[2]), x[3],x[4], max(0.0000000001, x[5])], test_X)
 
-	print "train len: ", len(train_X)
+	print("train len: ", len(train_X))
 
 	X_ = train_X
 	y = train_y
@@ -97,24 +98,26 @@ for alg in algs:
 	regr.fit(X_,y)
 
 	#models = pickle.loads("models.pickle")
-	try:
-		models = joblib.load("models_6.pkl")
-	except IOError:
-		models = {}
+	# try:
+	# 	models = joblib.load("models_6.pkl")
+	# except IOError:
+	# 	models = {}
+	
+	models = {}
 	models[alg] = regr
 	joblib.dump(models, "models_6.pkl")
 
 	#print "accuracy: ", regr.score(test_X,test_y)
-	print "Alg: ", alg
+	print("Alg: ", alg)
 	#print "\tvar explained: ", r2_score(test_y, epsilon_predict)
-	print "out of bag: ", regr.oob_score_
-	print sorted(zip(map(lambda x: float("{0:.2f}".format(round(x, 4))), regr.feature_importances_), features),
-	             reverse=True)
+	print("out of bag: ", regr.oob_score_)
+	print(sorted(zip(map(lambda x: float("{0:.2f}".format(round(x, 4))), regr.feature_importances_), features),
+	             reverse=True))
 
 	epsilon_predict_test = regr.predict(test_X)
 	epsilon_predict_train = regr.predict(train_X)
 
-	print "mean squared error train: ", mean_squared_error(train_y, epsilon_predict_train)
-	print "train average, median", sum(epsilon_predict_train)/len(epsilon_predict_train), sorted(epsilon_predict_train)[len(epsilon_predict_train)/2]
-	print "mean squared error test: ", mean_squared_error(test_y, epsilon_predict_test)
-	print "train average, median", sum(epsilon_predict_test)/len(epsilon_predict_test), sorted(epsilon_predict_test)[len(epsilon_predict_test)/2]
+	print ("mean squared error train: ", mean_squared_error(train_y, epsilon_predict_train))
+	print ("train average, median", sum(epsilon_predict_train)/len(epsilon_predict_train), sorted(epsilon_predict_train)[int(len(epsilon_predict_train)/2)])
+	print ("mean squared error test: ", mean_squared_error(test_y, epsilon_predict_test))
+	print ("train average, median", sum(epsilon_predict_test)/len(epsilon_predict_test), sorted(epsilon_predict_test)[int(len(epsilon_predict_test)/2)])

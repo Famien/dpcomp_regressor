@@ -1,0 +1,9 @@
+meta
+
+bins = 50
+workload = prefix 1d	
+
+
+#error pairs
+privelet_formula_errors
+error_pairs_data_6
